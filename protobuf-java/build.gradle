@@ -1,0 +1,38 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'idea'
+    id "com.google.protobuf" version "0.8.10"
+}
+
+group 'com.github.elliotmoule.protobuf'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.protobuf:protobuf-java:3.5.1'
+    // util dependency for converting to json.
+    compile 'com.google.protobuf:protobuf-java-util:3.5.1'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+protobuf {
+    // Configure the protoc executable
+    protoc {
+        // Download from repositories
+        artifact = 'com.google.protobuf:protoc:3.5.1'
+    }
+}
