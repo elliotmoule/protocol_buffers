@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	complexpb "protocol_buffers/protobuf-golang/src/complex"
 	enumpb "protocol_buffers/protobuf-golang/src/enums"
 	simplepb "protocol_buffers/protobuf-golang/src/simple"
 
@@ -18,6 +19,29 @@ func main() {
 	jsonFunctions(sm)
 
 	doEnum()
+
+	doComplex()
+}
+
+func doComplex() {
+	cm := complexpb.ComplexMessage{
+		OneDummy: &complexpb.DummyMessage{
+			Id:   1,
+			Name: "First message",
+		},
+		MultipleDummy: []*complexpb.DummyMessage{
+			&complexpb.DummyMessage{
+				Id:   2,
+				Name: "Second message",
+			},
+			&complexpb.DummyMessage{
+				Id:   3,
+				Name: "Third message",
+			},
+		},
+	}
+
+	fmt.Println("Successfully initialised complex proto:", cm)
 }
 
 func doEnum() {
@@ -28,7 +52,7 @@ func doEnum() {
 
 	em.DayOfTheWeek = enumpb.DayOfTheWeek_MONDAY
 
-	fmt.Println(em)
+	fmt.Println("Successfully initialised enumeration proto:", em)
 }
 
 func jsonFunctions(sm proto.Message) {
