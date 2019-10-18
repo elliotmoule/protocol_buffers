@@ -6,6 +6,7 @@ import (
 	"log"
 	simplepb "protocol_buffers/protobuf-golang/src/simple"
 
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 )
 
@@ -13,6 +14,37 @@ func main() {
 	sm := doSimple()
 
 	readAndWrite(sm)
+	jsonFunctions(sm)
+
+	//doEnum()
+}
+
+func jsonFunctions(sm proto.Message) {
+	smAsString := toJSON(sm)
+
+	fmt.Println("Simple Message as JSON:", smAsString)
+
+	sm2 := &simplepb.SimpleMessage{}
+	fromJSON(smAsString, sm2)
+	fmt.Println("Successfully created proto struct:", sm2)
+}
+
+func toJSON(pb proto.Message) string {
+	marshaler := jsonpb.Marshaler{}
+	out, err := marshaler.MarshalToString(pb)
+
+	if err != nil {
+		log.Fatalln("Cannot convert to JSON", err)
+	}
+	return out
+}
+
+func fromJSON(in string, pb proto.Message) {
+	err := jsonpb.UnmarshalString(in, pb)
+
+	if err != nil {
+		log.Fatalln("Could not unmarshal JSON into the pb struct", err)
+	}
 }
 
 func readAndWrite(sm proto.Message) {
@@ -66,11 +98,11 @@ func doSimple() *simplepb.SimpleMessage {
 		SampleList: []int32{1, 4, 7, 8},
 	}
 
-	fmt.Println(sm)
+	fmt.Println("Initialised Simple Message:", sm)
 
 	sm.Name = "New name"
 
-	fmt.Println(sm)
+	fmt.Println("'Name' Field changed:", sm)
 
 	fmt.Println("The ID is:", sm.GetId())
 
