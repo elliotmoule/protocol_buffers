@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
+        "enumpb",
         "fname",
+        "jsonpb",
         "protobuf",
         "protoc",
         "simplepb"
